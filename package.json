@@ -1,0 +1,14 @@
+{
+  "name": "omega-strikers",
+  "version": "1.0.0",
+  "description": "Omega Strikers API",
+  "main": "OmegaStrikers.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nicaksks",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0"
+  }
+}
