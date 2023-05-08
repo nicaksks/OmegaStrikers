@@ -1,7 +1,11 @@
 # About
 This API is not official, use it at your own risk.
 
-# NoName
+# Download
+```npm install omega-strikers```<br>
+[npm page](https://www.npmjs.com/package/omega-strikers)
+
+# Client
 To initialize the client, you need the Token and Token Refresh.
 Use Fiddler Classic to retrieve the token.
 
