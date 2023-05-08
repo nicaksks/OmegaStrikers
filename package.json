@@ -1,6 +1,6 @@
 {
   "name": "omega-strikers",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Omega Strikers API",
   "main": "OmegaStrikers.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "axios": "^1.4.0"
   },
   "repository": {
-  "type": "git",
-  "url": "https://github.com/nicaksks/OmegaStrikers"
+    "type": "git",
+    "url": "https://github.com/nicaksks/OmegaStrikers"
   }
 }
