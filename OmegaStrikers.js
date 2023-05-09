@@ -10,11 +10,12 @@ module.exports = class OmegaStrikers {
   #_instance;
 
   constructor({ token, refresh }) {
+
     this.#_token = token;
     this.#_refresh = refresh;
 
-    if (this.#_token == null || this.#_refresh == null) {
-      throw new OSError("Token or Refresh invalid.");
+    if (!this.#_token || !this.#_refresh) {
+      throw new OSError("Token or Token Refresh invalid.");
     };
 
     this.#_instance = axios.create({
@@ -28,9 +29,9 @@ module.exports = class OmegaStrikers {
   };
 
   // < Leaderboard > \\
-  leaderboard(players, region) {
+  leaderboard({ players, region }) {
 
-    if (!players && !region) return "Invalid pages and region.";
+    if (!players && !region) return "Invalid players number and region.";
 
     const regions = ["global", "asia", "na", "sa", "eu", "oce"];
 
@@ -44,14 +45,20 @@ module.exports = class OmegaStrikers {
 
   // < Search Player By ID >
   async search(playerName) {
-    const { data } = await this.#_instance(`/v1/players?usernameQuery=${playerName}`);
-    if (data.matches.length == 0) throw new OSError("Player not found.");
+    try {
 
-    return searchPlayer(playerName, data);
+      const response = await this.#_instance(`/v1/players?usernameQuery=${playerName}`);
+      if (response.data.matches.length == 0) throw new OSError("Player not found.");
+      return searchPlayer(playerName, response.data);
+
+    } catch(e) {
+      if(e.response.data.error.message === "Player not authorized.") throw new OSError("Token or Token Refresh not authorized.");
+      throw new OSError("Unknown error.");
+    };
   };
 
   // < Show Profile (Ranked) >
-  async ranked(playerName, region) {
+  async ranked({ playerName, region }) {
 
     const regions = ["global", "asia", "na", "sa", "eu", "oce"];
     if (!regions.includes(region.toLowerCase())) return "Invalid server.";
@@ -62,13 +69,13 @@ module.exports = class OmegaStrikers {
       const { data } = await this.#_instance(`/v1/ranked/leaderboard/search/${playerId}?entriesBefore=1&entriesAfter=1&specificRegion=${selectServer(region)}`);
       return searchInfo(playerName, data);
     } catch (e) {
-      console.log(e);
       throw new OSError("This player either doesn't have any ranked games or is not among the top 10,000 players.");
     };
   };
 
   // < Show Account Level >
-  async level(playerName) {
+  async level({ playerName }) {
+
     const playerId = await this.search(playerName);
 
     const { data } = await this.#_instance(`/v1/mastery/${playerId}/player`);
@@ -76,8 +83,10 @@ module.exports = class OmegaStrikers {
   };
 
   // < Show Profile Mastery Characters >
-  async mastery(playerName) {
+  async mastery({ playerName }) {
+
     const playerId = await this.search(playerName);
+
     const { data } = await this.#_instance(`/v2/mastery/${playerId}/characters`);
     return data;
   };

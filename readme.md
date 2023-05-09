@@ -22,25 +22,25 @@ const client = new OmegaStrikers({
 Players - Number of Players to be displayed in the result;
 Region: Global, Asia, NA, SA, EU, OCE;
 */
-await client.leaderboard("10", "sa");
+await client.leaderboard({ players: 10, region: "na" });
 
 /*
 Playername | Region;
 Will return player information if they are in the top 10,000;
 */
-await client.ranked("Aesop", "na");
+await client.ranked({ playerName: "Aesop", region: "na" });
 
 /*
 Playername;
 Returns the player's level information;
 */
-await client.level("Aesop");
+await client.level({ playerName: "Aesop" });
 
 /*
 playerName;
 Returns user's mastery information;
 */
-await client.mastery("Aesop");
+await client.mastery({ playerName: "Aesop" });
 ```
 
 If you want to help with the project, feel free to contribute.
