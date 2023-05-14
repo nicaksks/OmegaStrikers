@@ -1,6 +1,8 @@
 const axios = require("axios");
 const OSError = require("./utils/Error");
 const selectServer = require("./utils/selectServer");
+const regions = require("./utils/regions");
+
 const { searchPlayer, searchInfo } = require("./utils/searchPlayer");
 
 module.exports = class OmegaStrikers {
@@ -31,11 +33,8 @@ module.exports = class OmegaStrikers {
   leaderboard({ players, region }) {
 
     if (!players && !region) return "Invalid players number and region.";
-
-    const regions = ["global", "asia", "na", "sa", "eu", "oce"];
-
-    if (parseInt(players) < 1 || parseInt(players) > 10000) return "Minimum players is 10 and Max players is 10000.";
-    if (!regions.includes(region.toLowerCase())) return "Invalid server.";
+    if (!regions.hasOwnProperty(region.toLowerCase())) return "Invalid server.";
+    if (parseInt(players) < 1 || parseInt(players) > 10000) return "Minimum players is 1 and Max players is 10000.";
 
     return this.#_instance.get(`/v1/ranked/leaderboard/players?startRank=0&pageSize=${players}${selectServer(region)}`)
       .then(response => response.data.players)
@@ -59,10 +58,8 @@ module.exports = class OmegaStrikers {
   // < Show Profile (Ranked) >
   async ranked({ playerName, region }) {
 
-    const regions = ["global", "asia", "na", "sa", "eu", "oce"];
-    if (!regions.includes(region.toLowerCase())) return "Invalid server.";
-
     const playerId = await this.search(playerName);
+    if (!regions.hasOwnProperty(region.toLowerCase())) return "Invalid server.";
 
     try {
       const { data } = await this.#_instance.get(`/v1/ranked/leaderboard/search/${playerId}?entriesBefore=1&entriesAfter=1&specificRegion=${selectServer(region)}`);
