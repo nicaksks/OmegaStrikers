@@ -13,7 +13,7 @@ module.exports = class OmegaStrikers {
 
   constructor({ token, refresh }) {
 
-    this.#_token = token;
+    this.#_token = token.replace("Bearer ", "");
     this.#_refresh = refresh;
 
     if (!this.#_token || !this.#_refresh) {
@@ -31,7 +31,7 @@ module.exports = class OmegaStrikers {
 
   // < Leaderboard > \\
   leaderboard({ players, region }) {
-
+    
     if (!players && !region) return "Invalid players number and region.";
     if (!regions.hasOwnProperty(region.toLowerCase())) return "Invalid server.";
     if (parseInt(players) < 1 || parseInt(players) > 10000) return "Minimum players is 1 and Max players is 10000.";
