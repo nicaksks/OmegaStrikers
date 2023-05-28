@@ -1,5 +1,5 @@
 const regions = require("./regions");
 
 module.exports = function selectServer(region) {
-  return parameter = region === "global" ? "" : `&specificRegion=${regions[region.toLowerCase()]}`;
+  return parameter = region.toLowerCase() === "global" ? "" : `&specificRegion=${regions[region.toLowerCase()]}`;
 };
